@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ঈদের অনুষ্ঠানের রেজিস্ট্রেশন</title>
+</head>
+<body style="font-family: sans-serif; max-width: 500px; margin: auto; padding-top: 50px;">
+  <h2>ঈদের অনুষ্ঠানের রেজিস্ট্রেশন ফর্ম</h2>
+  <form id="regForm">
+    <label>👤 নাম: <br><input type="text" name="name" required></label><br><br>
+    <label>🏫 শ্রেণি: <br><input type="text" name="class" required></label><br><br>
+    <label>👪 কতজন আসবেন: <br><input type="number" name="members" required></label><br><br>
+    <label>📞 মোবাইল নম্বর: <br><input type="text" name="phone"></label><br><br>
+    <button type="submit">✅ জমা দিন</button>
+  </form>
+
+  <p id="status" style="margin-top: 20px;"></p>
+
+  <script>
+    document.getElementById("regForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      fetch("https://script.google.com/macros/s/AKfycbwWRZQzQseyvO2WoxBYChU_wjD4b7kyr8yGLYmXuD-H3h9fnbBL5DmAt9eHK06igrskjA/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(res => res.text())
+      .then(response => {
+        document.getElementById("status").innerText = "🎉 রেজিস্ট্রেশন সফল হয়েছে!";
+        document.getElementById("regForm").reset();
+      }).catch(err => {
+        document.getElementById("status").innerText = "⚠️ ত্রুটি হয়েছে, আবার চেষ্টা করুন।";
+      });
+    });
+  </script>
+</body>
+</html>
